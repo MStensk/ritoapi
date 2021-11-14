@@ -4,6 +4,7 @@ package kea.lhk.rito_api.models;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -15,6 +16,8 @@ import javax.persistence.*;
 public class Summoner {
 
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid",strategy = "uuid2")
     @Column
     private String id;
 
