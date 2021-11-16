@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Data
@@ -24,6 +25,7 @@ public class Summoner {
     @Column
     private String accountId;
 
+
     @Column
     private String puuid;
 
@@ -39,9 +41,8 @@ public class Summoner {
     @Column
     private int summonerLevel;
 
-
-
-
+    @OneToMany(mappedBy = "summoner",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Set<Match> match;
 
 
 }
