@@ -17,7 +17,7 @@ public class Match {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid",strategy = "uuid2")
     @Column
-    private String matchId;
+    private String id;
 
     @Column
     private String summonerName;
@@ -34,4 +34,5 @@ public class Match {
     @ManyToOne
     @JoinColumn(name = "puuid")
     private Summoner summoner;
+
 }

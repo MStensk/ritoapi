@@ -26,8 +26,9 @@ public class Summoners {
     @GetMapping("/summoners/import")
     public String importSummonersIntoDatabase(){
         for(int i = 0; i < summoners.usernames.length; i++) {
-            ObjectMapper objectMapper = new ObjectMapper();
+
             try {
+                ObjectMapper objectMapper = new ObjectMapper();
                 Summoner summoner = objectMapper.readValue(new URL(summoners.url +
                         summoners.usernames[i] + summoners.key),Summoner.class);
                 summoners.save(summoner);
