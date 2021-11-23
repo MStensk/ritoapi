@@ -46,34 +46,39 @@ public class Matches {
                     eri=eri.replace("\"","");
                     String[] eris = eri.split(",");
 
+                    //iterating through each match_id
                     for (String matchid : eris) {
                         String document1 = Jsoup.connect(BASE_URL + matchid + APIKEY).ignoreContentType(true).get().toString();
-                        document1 = document1.substring(document1.indexOf("\"assists\":")+10);
-                        for (int i = 0; i < 10; i++) {
-                            Match match = new Match();
 
-                            match.setId(matchid);
+                        //iterating through each player in the match
+                        for (int i = 0; i < 10; i++) {
+                            Match match1 = new Match();
+
+                            match1.setMatchId(matchid);
                             String summonerName = document1.substring(document1.indexOf("\"summonerName\":")+16
                                     ,document1.indexOf("\",\"teamEarlySurrendered\":"));
-                            match.setSummonerName(summonerName);
+                            match1.setSummonerName(summonerName);
 
                             //Virker lortet?
-                            int kills = Integer.parseInt(document1.substring(document1.indexOf("\"kills\":")+8,document1.indexOf(",\"lane\"")));
-                            match.setKills(kills);
+                            int kills = Integer.parseInt(document1.substring(document1.indexOf("\"kills\":")+8,
+                                    document1.indexOf(",\"lane\"")));
+                            match1.setKills(kills);
 
 
-                            int deaths = Integer.parseInt(document1.substring(document1.indexOf("\"deaths\":")+9,document1.indexOf(",\"detectorWardsPlaced\"")));
-                            match.setDeaths(deaths);
+                            int deaths = Integer.parseInt(document1.substring(document1.indexOf("\"deaths\":")+9,
+                                    document1.indexOf(",\"detectorWardsPlaced\"")));
+                            match1.setDeaths(deaths);
 
                             document1 = document1.substring(document1.indexOf("\"win\":")+6);
-                            if(i==9){
-                                boolean win = Boolean.parseBoolean(document1.substring(0,document1.indexOf("}")));
-                                match.setWin(win);
-                            }
+                            boolean win = Boolean.parseBoolean(document1.substring(0,document1.indexOf("}")));
+                            match1.setWin(win);
 
+                           // String puuid = document1.substring(document1.indexOf("\"puuid\":")+9,document1.indexOf("\",\"quadraKills"));
+                           // match1.setPuuid(puuid);
 
-                            this.match.save(match);
+                            match.save(match1);
 
+                            document1 = document1.substring(document1.indexOf("\"assists\":")+10);
                         }
 
                     }
@@ -93,17 +98,17 @@ public class Matches {
     }
 
     @GetMapping("/matches/{id}")
-    public Match findMatchById(@PathVariable String id){
+    public Match findMatchById(@PathVariable long id){
         return match.findById(id).get();
     }
 
     @DeleteMapping("/matches/{id}")
-    public void deleteById(@PathVariable String id){
+    public void deleteById(@PathVariable long id){
         match.deleteById(id);
     }
 
     @PatchMapping("/matches/{id}")
-    public String patchById(@PathVariable String id, @RequestBody Match matchToPatch){
+    public String patchById(@PathVariable long id, @RequestBody Match matchToPatch){
         return match.findById(id).map(foundMatch -> {
             if(matchToPatch.getDeaths()!=-1)foundMatch.setDeaths(matchToPatch.getDeaths());
             if(matchToPatch.getKills()!=-1)foundMatch.setKills(matchToPatch.getKills());

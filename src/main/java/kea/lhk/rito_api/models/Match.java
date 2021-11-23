@@ -15,8 +15,9 @@ import javax.persistence.*;
 public class Match {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private String id;
+    private Long id;
 
     @Column
     private String summonerName;
@@ -30,9 +31,10 @@ public class Match {
     @Column
     private int deaths;
 
-    @ManyToOne
-    @JoinColumn(name = "puuid")
-    @JsonIgnore
-    private Summoner summoner;
+    @Column
+    private String puuid;
+
+    @Column
+    private String matchId;
 
 }
