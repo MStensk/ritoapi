@@ -33,7 +33,7 @@ public class Matches {
     SummonerRepository summoner;
 
     private static final String BASE_URL = "https://europe.api.riotgames.com/lol/match/v5/matches/";
-    private static final String APIKEY = "?api_key=RGAPI-6dff0c4e-8247-4f8a-bc8a-1d43f788cd68";
+    private static final String APIKEY = "?api_key=RGAPI-8923c021-46fc-46c4-8539-a6a83b8d23b1";
 
 
     @GetMapping("/matches/import")
@@ -43,7 +43,7 @@ public class Matches {
         for (Summoner summoner : summoner.findAll()) {
 
             try {
-
+                //bruger Jsoup til at fetch riots api
                Document document = Jsoup.connect(matches.url + summoner.getPuuid()+
                         matches.startAndCount + matches.key).ignoreContentType(true).get();
 
@@ -61,7 +61,7 @@ public class Matches {
                             Match match = new Match();
 
                             match.setId(matchid);
-                            String summonerName = document1.substring(document1.indexOf("\"summonerName\":")+12
+                            String summonerName = document1.substring(document1.indexOf("\"summonerName\":")+16
                                     ,document1.indexOf("\",\"teamEarlySurrendered\":"));
                             match.setSummonerName(summonerName);
 

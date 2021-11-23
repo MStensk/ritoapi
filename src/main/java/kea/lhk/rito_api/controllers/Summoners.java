@@ -21,6 +21,18 @@ public class Summoners {
     @Autowired
     SummonerRepository summoners;
 
+    @GetMapping("/summoners")
+    public List<Summoner> getAllSummoners(){
+        return summoners.findAll();
+    }
+
+    @GetMapping("/summoners/{id}")
+    public Summoner getSummonerById(@PathVariable String id){
+        return summoners.getById(id);
+    }
+
+    @DeleteMapping("/summoners/{id}")
+
 
 
     @GetMapping("/summoners/import")
