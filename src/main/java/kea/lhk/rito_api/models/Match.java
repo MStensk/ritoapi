@@ -1,5 +1,6 @@
 package kea.lhk.rito_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +15,7 @@ import javax.persistence.*;
 public class Match {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid",strategy = "uuid2")
-    @Column
+    @Column(nullable = false)
     private String id;
 
     @Column
@@ -33,6 +32,7 @@ public class Match {
 
     @ManyToOne
     @JoinColumn(name = "puuid")
+    @JsonIgnore
     private Summoner summoner;
 
 }

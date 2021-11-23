@@ -1,33 +1,24 @@
 package kea.lhk.rito_api.controllers;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kea.lhk.rito_api.models.Match;
 import kea.lhk.rito_api.models.Summoner;
 import kea.lhk.rito_api.repository.MatchesRepository;
 import kea.lhk.rito_api.repository.SummonerRepository;
-import org.hibernate.jpa.boot.internal.PersistenceXmlParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 public class Matches {
 
     @Autowired
-    MatchesRepository matches;
+    MatchesRepository match;
 
     @Autowired
     SummonerRepository summoner;
@@ -36,6 +27,7 @@ public class Matches {
     private static final String APIKEY = "?api_key=RGAPI-8923c021-46fc-46c4-8539-a6a83b8d23b1";
 
 
+    //TODO add matchId eller gameId så man kan se hvem der har været inde i samme match
     @GetMapping("/matches/import")
     public String importMatches(){
 
@@ -43,9 +35,9 @@ public class Matches {
         for (Summoner summoner : summoner.findAll()) {
 
             try {
-                //bruger Jsoup til at fetch riots api
-               Document document = Jsoup.connect(matches.url + summoner.getPuuid()+
-                        matches.startAndCount + matches.key).ignoreContentType(true).get();
+                //bruger Jsoup til at fetch riots api, hvor man kan få matchIds
+               Document document = Jsoup.connect(match.url + summoner.getPuuid()+
+                        match.startAndCount + match.key).ignoreContentType(true).get();
 
                 Elements elements = document.select("body");
                 for (Element element: elements) {
@@ -74,12 +66,14 @@ public class Matches {
                             match.setDeaths(deaths);
 
                             document1 = document1.substring(document1.indexOf("\"win\":")+6);
-                            boolean win = Boolean.parseBoolean(document1.substring(0,document1.indexOf("}")));
-                            match.setWin(win);
+                            if(i==9){
+                                boolean win = Boolean.parseBoolean(document1.substring(0,document1.indexOf("}")));
+                                match.setWin(win);
+                            }
 
-                            matches.save(match);
 
-                            document1 = document1.substring(document1.indexOf("\"assists\":")+10);
+                            this.match.save(match);
+
                         }
 
                     }
@@ -93,4 +87,35 @@ public class Matches {
         return "Diid it work?";
     }
 
+    @GetMapping("/matches")
+    public List<Match> findAllMatches(){
+        return match.findAll();
+    }
+
+    @GetMapping("/matches/{id}")
+    public Match findMatchById(@PathVariable String id){
+        return match.findById(id).get();
+    }
+
+    @DeleteMapping("/matches/{id}")
+    public void deleteById(@PathVariable String id){
+        match.deleteById(id);
+    }
+
+    @PatchMapping("/matches/{id}")
+    public String patchById(@PathVariable String id, @RequestBody Match matchToPatch){
+        return match.findById(id).map(foundMatch -> {
+            if(matchToPatch.getDeaths()!=-1)foundMatch.setDeaths(matchToPatch.getDeaths());
+            if(matchToPatch.getKills()!=-1)foundMatch.setKills(matchToPatch.getKills());
+            if(matchToPatch.getSummonerName()!=null)foundMatch.setSummonerName(matchToPatch.getSummonerName());
+            if(matchToPatch.isWin()==false)foundMatch.setWin(matchToPatch.isWin());
+            match.save(foundMatch);
+            return "match has been patched";
+        }).orElse("match has not been patched");
+    }
+
+    @PostMapping("/matches")
+    public Match addMatch(@RequestBody Match newMatch){
+        return match.save(newMatch);
+    }
 }

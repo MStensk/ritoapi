@@ -1,6 +1,7 @@
 package kea.lhk.rito_api.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,9 +18,7 @@ import java.util.Set;
 public class Summoner {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid",strategy = "uuid2")
-    @Column
+    @Column(nullable = false)
     private String id;
 
     @Column
@@ -41,6 +40,7 @@ public class Summoner {
     @Column
     private int summonerLevel;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "summoner",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Match> match;
 

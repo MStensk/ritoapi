@@ -19,31 +19,46 @@ public class Summoners {
 
 
     @Autowired
-    SummonerRepository summoners;
+    SummonerRepository summoner;
 
     @GetMapping("/summoners")
     public List<Summoner> getAllSummoners(){
-        return summoners.findAll();
+        return summoner.findAll();
     }
 
     @GetMapping("/summoners/{id}")
     public Summoner getSummonerById(@PathVariable String id){
-        return summoners.getById(id);
+        return summoner.findById(id).get();
     }
 
     @DeleteMapping("/summoners/{id}")
+    public void deleteSummoner(@PathVariable String id){
+        summoner.deleteById(id);
+    }
 
-
+    @PatchMapping("/summoners/{id}")
+    public String updateSummonerInfo(@PathVariable String id, @RequestBody Summoner summonerToPatch){
+        return summoner.findById(id).map(foundSummoner ->{
+            if(summonerToPatch.getAccountId()!=null)foundSummoner.setAccountId(summonerToPatch.getAccountId());
+            if(summonerToPatch.getName()!=null)foundSummoner.setName(summonerToPatch.getName());
+            if(summonerToPatch.getProfileIconId()!=-1)foundSummoner.setProfileIconId(summonerToPatch.getProfileIconId());
+            if(summonerToPatch.getPuuid()!=null)foundSummoner.setPuuid(summonerToPatch.getPuuid());
+            if(summonerToPatch.getRevisionDate()!=-1)foundSummoner.setRevisionDate(summonerToPatch.getRevisionDate());
+            if(summonerToPatch.getSummonerLevel()!=-1)foundSummoner.setSummonerLevel(summonerToPatch.getSummonerLevel());
+            summoner.save(foundSummoner);
+            return "summoner was patched";
+        }).orElse("summoner was not patched");
+    }
 
     @GetMapping("/summoners/import")
     public String importSummonersIntoDatabase(){
-        for(int i = 0; i < summoners.usernames.length; i++) {
+        for(int i = 0; i < summoner.usernames.length; i++) {
 
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
-                Summoner summoner = objectMapper.readValue(new URL(summoners.url +
-                        summoners.usernames[i] + summoners.key),Summoner.class);
-                summoners.save(summoner);
+                Summoner summonerToSave = objectMapper.readValue(new URL(summoner.url +
+                        summoner.usernames[i] + summoner.key),Summoner.class);
+                summoner.save(summonerToSave);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -51,5 +66,10 @@ public class Summoners {
             }
         }
         return "characters been loaded into database";
+    }
+
+    @PostMapping("/summoners")
+    public Summoner addSummoner(@RequestBody Summoner newSummoner){
+        return summoner.save(newSummoner);
     }
 }
