@@ -30,35 +30,23 @@ public class Champions {
     @GetMapping("/champions/import")
     public String importSummonersIntoDatabase(){
 
-            try {
-                Document document = Jsoup.connect(champions.url).ignoreContentType(true).get();
 
-                Elements elements = document.select("body");
-                for (Element element: elements) {
-                    String champs = element.toString().substring(element.toString().indexOf("{\"type\":")+2,
-                            element.toString().indexOf("}}}}")-1);
-                    champs =champs.replace("\"","");
-                    String[] champis = champs.split(",");
-                    for(int i = 0; i<1; i++) {
-                        String docChamps = Jsoup.connect(champions.url).ignoreContentType(true).get().toString();
-                        docChamps = docChamps.substring(docChamps.indexOf("}};")+2);
+        String docChamps = null;
+        try {
+            docChamps = Jsoup.connect(champions.url).ignoreContentType(true).get().toString();
 
-                        for(int b = 0; b<30; b++) {
-                            Champion champion = new Champion();
+            for(int b = 0; b<30; b++) {
+                Champion champion = new Champion();
 
-                            String champName = docChamps.substring(docChamps.indexOf("\"name\":")+8,
-                                    docChamps.indexOf("\"title\":")-2);
+                String champName = docChamps.substring(docChamps.indexOf("\"name\":")+8,
+                        docChamps.indexOf("\"title\":")-2);
 
-                            System.out.println(champName);
-                        }
+                System.out.println(champName);
 
-                    }
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "error loading into database";
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return "characters been loaded into database";
     }

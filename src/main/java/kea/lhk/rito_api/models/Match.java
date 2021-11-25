@@ -31,9 +31,9 @@ public class Match {
     @Column
     private int deaths;
 
-    @Column
+    /*@Column
     private String puuid;
-
+*/
     @Column
     private String matchId;
 

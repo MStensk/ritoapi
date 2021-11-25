@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MatchesRepository extends JpaRepository<Match,Long> {
 
-    String key = "&api_key=RGAPI-8923c021-46fc-46c4-8539-a6a83b8d23b1";
+    String key = "&api_key=RGAPI-2ff57b62-3094-4e64-893c-348a47560682";
     String startAndCount = "/ids?start=0&count=2";
     String url = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/";
 

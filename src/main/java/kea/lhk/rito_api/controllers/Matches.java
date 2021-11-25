@@ -24,7 +24,7 @@ public class Matches {
     SummonerRepository summoner;
 
     private static final String BASE_URL = "https://europe.api.riotgames.com/lol/match/v5/matches/";
-    private static final String APIKEY = "?api_key=RGAPI-8923c021-46fc-46c4-8539-a6a83b8d23b1";
+    private static final String APIKEY = "?api_key=RGAPI-2ff57b62-3094-4e64-893c-348a47560682";
 
 
     //TODO add matchId eller gameId så man kan se hvem der har været inde i samme match
