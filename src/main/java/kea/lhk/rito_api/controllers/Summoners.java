@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8080/", maxAge = 3600)
 @RestController
 public class Summoners {
-
 
     @Autowired
     SummonerRepository summoner;
@@ -26,9 +26,9 @@ public class Summoners {
         return summoner.findAll();
     }
 
-    @GetMapping("/summoners/{id}")
-    public Summoner getSummonerById(@PathVariable String id){
-        return summoner.findById(id).get();
+    @GetMapping("/summoners/{summonerId}")
+    public Summoner getSummonerById(@PathVariable String summonerId){
+        return summoner.findById(summonerId).get();
     }
 
     @DeleteMapping("/summoners/{id}")
