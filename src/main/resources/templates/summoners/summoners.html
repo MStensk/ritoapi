@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <script src="../global/global.js"></script>
+    <script src="../lib/HTMLEscape.js"></script>
     <title>Summoners</title>
 </head>
 <body>
 
 
-<h2 id="summoner-name"></h2>
-<h4 id="summoner-accountId"></h4>
-<h3 id="summoner-profile-icon-id"></h3>
-<p id="summoner-puuid"></p>
-<p id="summoner-revisionDate"></p>
-<p id="summoner-level"></p>
+<table>
+    <thead>
+        <tr>
+            <th>Summoner Name</th>
+            <th>Summoner Account Id</th>
+            <th>Summoner puuid</th>
+        </tr>
+    </thead>
+    <tbody id="summoner-tbody">
 
+    </tbody>
+</table>
 
 <script src="./summoners.js"></script>
 </body>
