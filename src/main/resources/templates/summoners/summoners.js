@@ -14,12 +14,14 @@ fetch(baseURL+"/summoners")
 function createTable(summoner) {
     const cardElement = document.createElement("tr");
     cardElement.innerHTML = `
-        <td>${escapeHTML(summoner.accountId)}</td>
         <td>${escapeHTML(summoner.name)}</td>
-        <td>${escapeHTML(summoner.profileIconId.toString())}</td>
-        <td>${escapeHTML(summoner.puuid)}</td>
-        <td>${escapeHTML(summoner.revisionDate.toString())}</td>
+        <td>${escapeHTML(summoner.accountId)}</td>
         <td>${escapeHTML(summoner.summonerLevel.toString())}</td>
+        <td>${escapeHTML(summoner.puuid)}</td>
+        <td>${escapeHTML(summoner.profileIconId.toString())}</td>
+        <td>${escapeHTML(summoner.revisionDate.toString())}</td>
+        
+        
     `;
 
     tbodyElement.appendChild(cardElement);
