@@ -1,7 +1,3 @@
-const queryString = window.location.search;
-const URLParams = new URLSearchParams(queryString);
-const championId = URLParams.get("championId");
-let champions;
 const tbodyElement = document.getElementById("champions-tbody");
 
 fetch(baseURL+"/champions")

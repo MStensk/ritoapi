@@ -81,7 +81,7 @@ public class Champions {
     public void deleteById(@PathVariable long id){
         champions.deleteById(id);
     }
-    @PatchMapping("/summoners/{id}")
+    @PatchMapping("/champions/{id}")
     public String updateChampionsInfo(@PathVariable Long id, @RequestBody Champion championToPatch){
         return champions.findById(id).map(foundChampion ->{
             if(championToPatch.getChampionId()!=null)foundChampion.setChampionId(championToPatch.getChampionId());

@@ -1,13 +1,23 @@
-const baseMatchByPuuId = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/"
+const tbodyElement = document.getElementById("matches-tbody");
 
-//how many matches to show from start index to end count
-const start = "start=0";
-const count = "count=20";
-
-//you find puuid by fetching summoner
-const puuid = "0NiXceRFtc3QMCJRrWYJsvdirBXcjemLL9ujlCGpZCIlUPA9y6ruSQ-YOFQsJ2xSWNlwcZ3zv-wYaQ"
-
-fetch(baseMatchByPuuId + puuid + "/ids?" + start + "&" + count + "&" + key)
+fetch(baseURL+"/matches")
     .then(response => response.json())
-    .then(result => { console.log(result);
+    .then(result => {
+        result.map(matches => createTable(matches));
     });
+
+
+function createTable(matches) {
+    const cardElement = document.createElement("tr");
+    cardElement.innerHTML = `
+        <td>${escapeHTML(matches.matchId.toString())}</td>
+        <td>${escapeHTML(matches.summonerName)}</td>
+        <td>${escapeHTML(matches.win.toString())}</td>
+        <td>${escapeHTML(matches.kills.toString())}</td>
+        <td>${escapeHTML(matches.deaths.toString())}</td>
+        
+        
+    `;
+
+    tbodyElement.appendChild(cardElement);
+}

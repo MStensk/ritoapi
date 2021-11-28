@@ -1,7 +1,3 @@
-const queryString = window.location.search;
-const URLParams = new URLSearchParams(queryString);
-const summonerId = URLParams.get("summonerId");
-let summoners;
 const tbodyElement = document.getElementById("summoner-tbody");
 
 fetch(baseURL+"/summoners")
