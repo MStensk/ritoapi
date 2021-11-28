@@ -2,6 +2,7 @@ package kea.lhk.rito_api.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kea.lhk.rito_api.models.Champion;
+import kea.lhk.rito_api.models.Match;
 import kea.lhk.rito_api.models.Summoner;
 import kea.lhk.rito_api.repository.ChampionRepository;
 import kea.lhk.rito_api.repository.MatchesRepository;
@@ -46,7 +47,7 @@ public class Champions {
                         docChamps.indexOf("\"title\":")-2);
                 champion.setChampionName(champName);
 
-                String champId = docChamps.substring(docChamps.indexOf("\"key\":")+7,docChamps.indexOf(",\"name\":")-1);
+                Long champId = Long.parseLong(docChamps.substring(docChamps.indexOf("\"key\":")+7,docChamps.indexOf(",\"name\":")-1));
                 champion.setChampionId(champId);
 
                 String champTitle = docChamps.substring(docChamps.indexOf("\"title\":")+9,
@@ -67,5 +68,27 @@ public class Champions {
         }
 
         return "characters been loaded into database";
+    }
+    @GetMapping("/champions")
+    public List<Champion> findAllMatches(){
+        return champions.findAll();
+    }
+    @GetMapping("/champions/{id}")
+    public Champion findMatchById(@PathVariable long id){
+        return champions.findById(id).get();
+    }
+    @DeleteMapping("/champions/{id}")
+    public void deleteById(@PathVariable long id){
+        champions.deleteById(id);
+    }
+    @PatchMapping("/summoners/{id}")
+    public String updateChampionsInfo(@PathVariable Long id, @RequestBody Champion championToPatch){
+        return champions.findById(id).map(foundChampion ->{
+            if(championToPatch.getChampionId()!=null)foundChampion.setChampionId(championToPatch.getChampionId());
+            if(championToPatch.getChampionName()!=null)foundChampion.setChampionName(championToPatch.getChampionName());
+            if(championToPatch.getChampionTitle()!=null)foundChampion.setChampionTitle(championToPatch.getChampionTitle());
+            champions.save(foundChampion);
+            return "champion was patched";
+        }).orElse("champion was not patched");
     }
 }
