@@ -1,6 +1,4 @@
-const queryString = window.location.search;
-const URLParams = new URLSearchParams(queryString);
-const matchId = URLParams.get()
+
 const tbodyElement = document.getElementById("matches-tbody");
 
 fetch(baseURL+"/matches")
