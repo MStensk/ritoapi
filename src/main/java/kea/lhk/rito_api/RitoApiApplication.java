@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RitoApiApplication {
 
 
-
     public static void main(String[] args) {
         SpringApplication.run(RitoApiApplication.class, args);
     }
