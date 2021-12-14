@@ -78,7 +78,6 @@ public class Matches {
 
                             match.save(match1);
 
-                            document1 = document1.substring(document1.indexOf("\"assists\":")+10);
                         }
 
                     }
@@ -89,7 +88,7 @@ public class Matches {
             }
         }
 
-        return "Diid it work?";
+        return "Did it work?";
     }
 
     @GetMapping("/matches")

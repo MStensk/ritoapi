@@ -54,9 +54,6 @@ public class Champions {
                         docChamps.indexOf(",\"blurb\":")-1);
                 champion.setChampionTitle(champTitle);
 
-               /* String champDesc = docChamps.substring(docChamps.indexOf("\"blurb\":")+9,
-                        docChamps.indexOf(",\"info\":")-1);
-                champion.setChampionDesc(champDesc); */
 
                 docChamps = docChamps.substring(docChamps.indexOf("\"info\":")+10);
                 champions.save(champion);

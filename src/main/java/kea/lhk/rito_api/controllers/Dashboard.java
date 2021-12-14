@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class Dashboard {
-    @GetMapping("/dashboard")
+    @GetMapping("/")
     public String dashBoard() {
         return "dashboard";
     }
